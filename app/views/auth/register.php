@@ -1,7 +1,7 @@
-<?php require_once '../partials/header.php'; ?>
+<?php require_once('C:/xampp/htdocs/El_faro/app/views/partials/header.php'); ?>
 
 <div class="container">
-    <form method="POST" action="<?= BASE_URL ?>/app/controllers/AuthController.php?action=register" class="box">
+    <form method="POST" action="./app/controllers/AuthController.php?action=register" class="box">
         <div class="field">
             <label class="label">Nombre</label>
             <input class="input" type="text" name="name" required>
@@ -18,4 +18,4 @@
     </form>
 </div>
 
-<?php require_once '../partials/footer.php'; ?>
+<?php require_once('C:/xampp/htdocs/El_faro/app/views/partials/footer.php'); ?>

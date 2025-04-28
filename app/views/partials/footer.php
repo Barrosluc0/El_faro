@@ -11,6 +11,6 @@
     </div>
 </footer>
 
-<script src="<?= BASE_URL ?>/script.js"></script>
+<script src="./script.js"></script>
 </body>
 </html>

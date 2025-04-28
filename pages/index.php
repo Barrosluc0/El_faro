@@ -15,13 +15,13 @@ $articles = Article::getGeneralNews();
                     <?php foreach ($articles as $article): ?>
                     <div class="card article">
                         <div class="card-image">
-                            <img src="<?= BASE_URL ?>/<?= $article['image'] ?>" alt="<?= $article['title'] ?>">
+                            <img src="./<?= $article['image'] ?>" alt="<?= $article['title'] ?>">
                         </div>
                         <div class="card-content" onclick="mostrarNoticiaCompleta(
                             '<?= addslashes($article['title']) ?>', 
                             '<?= $article['category'] ?>', 
                             '<?= addslashes($article['content']) ?>', 
-                            '<?= BASE_URL ?>/<?= $article['image'] ?>'
+                            './<?= $article['image'] ?>'
                         )">
                             <h2 class="title is-4"><?= $article['title'] ?></h2>
                             <h4 class="subtitle is-6"><?= $article['category'] ?></h4>
@@ -37,9 +37,9 @@ $articles = Article::getGeneralNews();
                 <h2 class="title is-4">Artículos Recientes</h2>
                 <div class="box destacados">
                     <!-- Destacado 1 (Fútbol) -->
-                    <div class="card mb-4" onclick="location.href='<?= BASE_URL ?>?page=deportes'">
+                    <div class="card mb-4" onclick="location.href='.?page=deportes'">
                         <div class="card-image">
-                            <img src="<?= BASE_URL ?>/img/futbol.jpg" alt="Fútbol">
+                            <img src="./img/futbol.jpg" alt="Fútbol">
                         </div>
                         <div class="card-content">
                             <h3 class="title is-5">Chile clasifica al Mundial 2026</h3>
@@ -48,9 +48,9 @@ $articles = Article::getGeneralNews();
                     </div>
 
                     <!-- Destacado 2 (Bitcoin) -->
-                    <div class="card mb-4" onclick="location.href='<?= BASE_URL ?>?page=negocios'">
+                    <div class="card mb-4" onclick="location.href='.?page=negocios'">
                         <div class="card-image">
-                            <img src="<?= BASE_URL ?>/img/bitcoin.jpg" alt="Bitcoin">
+                            <img src="./img/bitcoin.jpg" alt="Bitcoin">
                         </div>
                         <div class="card-content">
                             <h3 class="title is-5">Bitcoin supera los $100,000</h3>
@@ -59,9 +59,9 @@ $articles = Article::getGeneralNews();
                     </div>
 
                     <!-- Destacado 3 (Nadal) -->
-                    <div class="card" onclick="location.href='<?= BASE_URL ?>?page=deportes'">
+                    <div class="card" onclick="location.href='.?page=deportes'">
                         <div class="card-image">
-                            <img src="<?= BASE_URL ?>/img/nadal.jpg" alt="Nadal">
+                            <img src="./img/nadal.jpg" alt="Nadal">
                         </div>
                         <div class="card-content">
                             <h3 class="title is-5">Nadal anuncia su retiro</h3>
@@ -74,4 +74,4 @@ $articles = Article::getGeneralNews();
     </div>
 </main>
 
-<?php require_once '../app/views/partials/footer.php'; ?>
+<?php require_once './app/views/partials/footer.php'; ?>
