@@ -6,7 +6,7 @@
     <title>El Faro</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/styles.css">
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <!-- Barra de avisos -->
@@ -16,7 +16,7 @@
 
     <!-- Header y Navbar -->
     <div class="header-logo">
-        <img src="<?= BASE_URL ?>/img/faro.png" alt="Logo El Faro">
+        <img src="./img/faro.png" alt="Logo El Faro">
         <div class="header-title">
             <span>EL</span>
             <span>FARO</span>
@@ -26,16 +26,16 @@
     <nav class="navbar">
         <div class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item" href="<?= BASE_URL ?>?page=home">Inicio</a>
-                <a class="navbar-item" href="<?= BASE_URL ?>?page=deportes">Deportes</a>
-                <a class="navbar-item" href="<?= BASE_URL ?>?page=negocios">Negocios</a>
+                <a class="navbar-item" href=".?page=home">Inicio</a>
+                <a class="navbar-item" href=".?page=deportes">Deportes</a>
+                <a class="navbar-item" href=".?page=negocios">Negocios</a>
             </div>
             <div class="navbar-end">
                 <?php if (isset($_SESSION['user'])): ?>
                     <span class="navbar-item"><?= $_SESSION['user']['name'] ?></span>
                 <?php else: ?>
-                    <a class="navbar-item" href="<?= BASE_URL ?>?page=registro">Registrarse</a>
-                    <a class="navbar-item" href="<?= BASE_URL ?>?page=login">Iniciar sesión</a>
+                    <a class="navbar-item" href=".?page=registro">Registrarse</a>
+                    <a class="navbar-item" href=".?page=login">Iniciar sesión</a>
                 <?php endif; ?>
                 <button id="toggle-form" class="button is-primary is-small mr-3">
                     Nueva Noticia
