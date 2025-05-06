@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../../models/User.php';  
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,17 +35,33 @@
                 <a class="navbar-item" href=".?page=home">Inicio</a>
                 <a class="navbar-item" href=".?page=deportes">Deportes</a>
                 <a class="navbar-item" href=".?page=negocios">Negocios</a>
+                <a class="navbar-item" href=".?page=contacto">Contacto</a>
             </div>
             <div class="navbar-end">
                 <?php if (isset($_SESSION['user'])): ?>
-                    <span class="navbar-item"><?= $_SESSION['user']['name'] ?></span>
+                    <span class="navbar-item"><?= htmlspecialchars($_SESSION['user']['nombre']) ?></span>
+                    
+                    <!-- Enlace para administradores -->
+                    <?php if (User::isAdmin($_SESSION['user']['correo'])): ?>
+                        <a class="navbar-item" href="./?page=admin/contactos">
+                            <span class="icon">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <span>Mensajes</span>
+                        </a>
+                    <?php endif; ?>
+
+                    <a class="navbar-item" href="./?page=logout">Cerrar sesión</a>
+                    
+                    <button id="toggle-form" class="button is-primary is-small mr-3">
+                        Nueva Noticia
+                    </button>
+                    
                 <?php else: ?>
                     <a class="navbar-item" href=".?page=registro">Registrarse</a>
                     <a class="navbar-item" href=".?page=login">Iniciar sesión</a>
                 <?php endif; ?>
-                <button id="toggle-form" class="button is-primary is-small mr-3">
-                    Nueva Noticia
-                </button>
+                
                 <span id="contador-articulos" class="contador-texto">Contador de artículos: 9</span>
             </div>
         </div>
@@ -51,6 +73,7 @@
     </div>
 
     <!-- Formulario desplegable -->
+    <?php if (isset($_SESSION['user'])): ?>
     <div id="form-agregar" class="box is-hidden">
         <h2 class="subtitle">Agregar Noticia</h2>
         <div class="field">
@@ -67,3 +90,4 @@
         </div>
         <button class="button is-primary" onclick="agregarArticulo()">Publicar</button>
     </div>
+    <?php endif; ?>

@@ -1,5 +1,5 @@
 <?php
-require_once './app/views/partials/header.php';
+require_once 'C:/xampp/htdocs/El_faro/app/views/partials/header.php';
 $articles = Article::getGeneralNews();
 ?>
 
@@ -74,4 +74,4 @@ $articles = Article::getGeneralNews();
     </div>
 </main>
 
-<?php require_once './app/views/partials/footer.php'; ?>
+<?php require_once 'C:/xampp/htdocs/El_faro/app/views/partials/footer.php'; ?>
