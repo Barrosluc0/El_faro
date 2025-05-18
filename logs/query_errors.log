@@ -1,0 +1,2 @@
+[2025-05-18 21:41:28] Error en query: CALL sp_check_admin_status(?) - SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE el_faro.sp_check_admin_status does not exist
+[2025-05-18 21:42:48] Error en query: CALL sp_check_admin_status(?) - SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE el_faro.sp_check_admin_status does not exist
