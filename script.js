@@ -1,13 +1,48 @@
-// ===== CONSTANTES Y CONFIGURACIÓN =====
-const MODAL_ANIMATION_DURATION = 300; // ms
-const DATE_UPDATE_INTERVAL = 1000; // 1 segundo
+// Constantes de configuración y duración de animaciones
+const MODAL_ANIMATION_DURATION = 300; // Duración de animación modal en ms
+const DATE_UPDATE_INTERVAL = 1000; // Intervalo para actualizar fecha/hora en ms
+const DARK_MODE_STORAGE_KEY = 'elFaro_dark_mode'; // Clave para guardar modo oscuro en localStorage
 
-// ===== FUNCIONALIDADES PRINCIPALES =====
+// Aplica el modo oscuro o claro según la preferencia guardada en localStorage
+function aplicarPreferenciaModo() {
+    const preferencia = localStorage.getItem(DARK_MODE_STORAGE_KEY);
+    if (preferencia === 'dark') {
+        document.body.classList.add('dark-mode');
+        actualizarIconoDarkMode(true);
+    } else {
+        document.body.classList.remove('dark-mode');
+        actualizarIconoDarkMode(false);
+    }
+}
 
-/**
- * Actualiza la fecha y hora en tiempo real
- * Usa Intl.DateTimeFormat para mejor soporte de internacionalización
- */
+// Actualiza el icono del botón modo noche (luna o sol) según el estado actual
+function actualizarIconoDarkMode(isDark) {
+    const icon = document.getElementById('dark-mode-icon');
+    if (!icon) return;
+    if (isDark) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        icon.setAttribute('title', 'Desactivar Modo Noche');
+    } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+        icon.setAttribute('title', 'Activar Modo Noche');
+    }
+}
+
+// Cambia el modo oscuro/claró y guarda la preferencia en localStorage
+function toggleDarkMode() {
+    const body = document.body;
+    const estaEnDark = body.classList.toggle('dark-mode');
+    if (estaEnDark) {
+        localStorage.setItem(DARK_MODE_STORAGE_KEY, 'dark');
+    } else {
+        localStorage.setItem(DARK_MODE_STORAGE_KEY, 'light');
+    }
+    actualizarIconoDarkMode(estaEnDark);
+}
+
+// Actualiza la fecha y hora en el elemento con id "fecha-hora" cada segundo
 function actualizarFechaHora() {
     const ahora = new Date();
     const formatter = new Intl.DateTimeFormat('es-CL', {
@@ -21,22 +56,15 @@ function actualizarFechaHora() {
         hour12: false,
         timeZone: 'America/Santiago'
     });
-    
+
     const fechaHoraElement = document.getElementById("fecha-hora");
     if (fechaHoraElement) {
         fechaHoraElement.textContent = formatter.format(ahora);
     }
 }
 
-/**
- * Muestra una noticia completa en modal con validación de XSS
- * @param {string} titulo - Título de la noticia
- * @param {string} categoria - Categoría de la noticia
- * @param {string} contenido - Contenido completo
- * @param {string} imagenUrl - URL de la imagen
- */
+// Muestra un modal con noticia completa, aplicando sanitización para prevenir XSS
 function mostrarNoticiaCompleta(titulo, categoria, contenido, imagenUrl) {
-    // Sanitización básica para prevenir XSS
     const sanitize = (str) => {
         const div = document.createElement('div');
         div.textContent = str;
@@ -47,7 +75,7 @@ function mostrarNoticiaCompleta(titulo, categoria, contenido, imagenUrl) {
     modal.className = "modal";
     modal.setAttribute('aria-modal', 'true');
     modal.setAttribute('role', 'dialog');
-    
+
     modal.innerHTML = `
         <div class="modal-background" onclick="cerrarModal()"></div>
         <div class="modal-content">
@@ -58,19 +86,17 @@ function mostrarNoticiaCompleta(titulo, categoria, contenido, imagenUrl) {
             <div class="content">${sanitize(contenido).replace(/\n/g, '<br>')}</div>
         </div>
     `;
-    
+
     document.body.appendChild(modal);
-    document.body.style.overflow = 'hidden'; // Bloquear scroll
-    modal.style.display = "block";
-    
-    // Focus para accesibilidad
+    document.body.style.overflow = 'hidden'; // Bloquear scroll de fondo
+    modal.style.display = "flex"; // Mostrar modal centrado
+
+    // Poner foco en botón cerrar para accesibilidad
     const closeBtn = modal.querySelector('.close-modal');
     if (closeBtn) closeBtn.focus();
 }
 
-/**
- * Cierra el modal con animación suave
- */
+// Cierra el modal con animación y restaura scroll
 function cerrarModal() {
     const modal = document.querySelector(".modal");
     if (modal) {
@@ -82,40 +108,36 @@ function cerrarModal() {
     }
 }
 
-/**
- * Valida y agrega un nuevo artículo al grid
- * Con validación de campos y sanitización
- */
+// Valida y agrega un nuevo artículo en el grid, sanitizando la entrada
 function agregarArticulo() {
-    // Elementos del formulario
     const tituloInput = document.getElementById("titulo-articulo");
     const categoriaInput = document.getElementById("categoria-articulo");
     const contenidoInput = document.getElementById("contenido-articulo");
     const imagenInput = document.getElementById("imagen-articulo");
-    
-    // Validación
+
+    // Validar campos obligatorios
     if (!tituloInput.value.trim() || !categoriaInput.value || !contenidoInput.value.trim()) {
         mostrarNotificacion('⚠️ Completa todos los campos obligatorios!', 'is-danger');
         return;
     }
 
-    // Sanitización
     const sanitizeForHTML = (str) => {
         const div = document.createElement('div');
         div.textContent = str;
         return div.innerHTML;
     };
 
+    // Sanitizar valores
     const titulo = sanitizeForHTML(tituloInput.value.trim());
     const categoria = sanitizeForHTML(categoriaInput.value);
     const contenido = sanitizeForHTML(contenidoInput.value.trim());
     const imagenUrl = imagenInput.value ? sanitizeForHTML(imagenInput.value.trim()) : '';
 
-    // Crear nuevo artículo
     const grid = document.querySelector(".article-grid");
     if (!grid) return;
 
-    const nuevoArticulo = document.createElement("article"); // Mejor semántica HTML
+    // Crear el artículo con estructura semántica
+    const nuevoArticulo = document.createElement("article");
     nuevoArticulo.className = "card article";
     nuevoArticulo.innerHTML = `
         ${imagenUrl ? `
@@ -129,43 +151,36 @@ function agregarArticulo() {
         </div>
     `;
 
-    // Evento click mejorado
+    // Al hacer click en el contenido, mostrar noticia completa en modal
     nuevoArticulo.querySelector('.card-content').addEventListener('click', () => {
         mostrarNoticiaCompleta(titulo, categoria, contenido, imagenUrl);
     });
 
     grid.prepend(nuevoArticulo);
-    
-    // Reset formulario
+
+    // Limpiar formulario y ocultarlo
     tituloInput.value = '';
     categoriaInput.value = '';
     contenidoInput.value = '';
     imagenInput.value = '';
-    
     document.getElementById("form-agregar").classList.add("is-hidden");
+
     actualizarContador();
     mostrarNotificacion('Artículo agregado correctamente!', 'is-success');
 }
 
-/**
- * Actualiza el contador de artículos
- * Con optimización de selección de elementos
- */
+// Actualiza el contador con la cantidad de artículos visibles
 function actualizarContador() {
     const articles = document.querySelectorAll(".article-grid .article");
     const contador = document.getElementById("contador-articulos");
-    
+
     if (contador) {
         contador.textContent = `Artículos mostrados: ${articles.length}`;
-        contador.setAttribute('aria-live', 'polite');
+        contador.setAttribute('aria-live', 'polite'); // Mejora accesibilidad
     }
 }
 
-/**
- * Muestra una notificación estilo toast
- * @param {string} mensaje - Texto a mostrar
- * @param {string} tipo - Clase CSS para el estilo (ej: 'is-success')
- */
+// Muestra una notificación tipo toast con mensaje y estilo dado
 function mostrarNotificacion(mensaje, tipo = 'is-info') {
     const notification = document.createElement('div');
     notification.className = `notification ${tipo}`;
@@ -173,69 +188,57 @@ function mostrarNotificacion(mensaje, tipo = 'is-info') {
         <button class="delete" onclick="this.parentElement.remove()"></button>
         ${mensaje}
     `;
-    
+
     notification.style.position = 'fixed';
     notification.style.bottom = '20px';
     notification.style.right = '20px';
     notification.style.zIndex = '1000';
     notification.style.transition = 'opacity 0.5s';
-    
+
     document.body.appendChild(notification);
-    
-    // Auto-ocultar después de 5 segundos
+
+    // Oculta automáticamente después de 5 segundos con animación
     setTimeout(() => {
         notification.style.opacity = '0';
         setTimeout(() => notification.remove(), 500);
     }, 5000);
 }
 
-// ===== MANEJADORES DE EVENTOS =====
-
-/**
- * Maneja el envío del formulario con validación
- */
+// Maneja el envío del formulario para agregar artículo
 function manejarSubmitForm(event) {
     event.preventDefault();
     agregarArticulo();
 }
 
-// ===== INICIALIZACIÓN =====
+// Código que se ejecuta al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
-    // Configuración inicial de fecha/hora
-    actualizarFechaHora();
-    setInterval(actualizarFechaHora, DATE_UPDATE_INTERVAL);
+    aplicarPreferenciaModo(); // Aplica modo oscuro/claro guardado
+    actualizarFechaHora(); // Muestra fecha y hora inicial
+    setInterval(actualizarFechaHora, DATE_UPDATE_INTERVAL); // Actualiza cada segundo
 
-    // Evento para toggle del formulario
-    const toggleForm = document.getElementById("toggle-form");
-    if (toggleForm) {
-        toggleForm.addEventListener("click", () => {
-            const form = document.getElementById("form-agregar");
-            form.classList.toggle("is-hidden");
-            if (!form.classList.contains('is-hidden')) {
-                document.getElementById("titulo-articulo").focus();
-            }
-        });
-    }
-
-    // Evento para el formulario
+    // Asigna evento submit al formulario de agregar artículo
     const formAgregar = document.getElementById("form-agregar");
     if (formAgregar) {
         formAgregar.addEventListener('submit', manejarSubmitForm);
     }
 
-    // Contador inicial
-    actualizarContador();
+    actualizarContador(); // Actualiza contador de artículos al inicio
 
-    // Mejorar accesibilidad del modal al presionar Escape
+    // Cierra modal al presionar tecla Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             cerrarModal();
         }
     });
+
+    // Botón para cambiar modo oscuro/claro
+    const darkModeBtn = document.getElementById('dark-mode-toggle');
+    if (darkModeBtn) {
+        darkModeBtn.addEventListener('click', toggleDarkMode);
+    }
 });
 
-// ===== POLYFILLS Y COMPATIBILIDAD =====
-// Asegurar compatibilidad con navegadores antiguos
+// Polyfill para forEach en NodeList en navegadores antiguos
 if (!NodeList.prototype.forEach) {
     NodeList.prototype.forEach = Array.prototype.forEach;
 }

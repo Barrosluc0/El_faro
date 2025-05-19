@@ -1,4 +1,5 @@
 <?php
+// Incluye header y carga noticias generales
 require_once 'C:/xampp/htdocs/El_faro/app/views/partials/header.php';
 $articles = Article::getGeneralNews();
 ?>
@@ -6,11 +7,10 @@ $articles = Article::getGeneralNews();
 <main class="main-content">
     <div class="container">
         <div class="columns">
-            <!-- Columna principal (Noticias generales) -->
+            <!-- Columna principal con noticias generales -->
             <div class="column is-8">
                 <h1 class="title has-text-left">Noticias Generales</h1>
                 
-                <!-- Grilla de noticias (3 artículos originales) -->
                 <div class="article-grid">
                     <?php foreach ($articles as $article): ?>
                     <div class="card article">
@@ -32,11 +32,12 @@ $articles = Article::getGeneralNews();
                 </div>
             </div>
 
-            <!-- Columna derecha (Artículos recientes - Original) -->
+            <!-- Columna lateral con artículos destacados -->
             <div class="column is-4">
                 <h2 class="title is-4">Artículos Recientes</h2>
                 <div class="box destacados">
-                    <!-- Destacado 1 (Fútbol) -->
+
+                    <!-- Destacado 1 -->
                     <div class="card mb-4" onclick="location.href='.?page=deportes'">
                         <div class="card-image">
                             <img src="./img/futbol.jpg" alt="Fútbol">
@@ -47,7 +48,7 @@ $articles = Article::getGeneralNews();
                         </div>
                     </div>
 
-                    <!-- Destacado 2 (Bitcoin) -->
+                    <!-- Destacado 2 -->
                     <div class="card mb-4" onclick="location.href='.?page=negocios'">
                         <div class="card-image">
                             <img src="./img/bitcoin.jpg" alt="Bitcoin">
@@ -58,7 +59,7 @@ $articles = Article::getGeneralNews();
                         </div>
                     </div>
 
-                    <!-- Destacado 3 (Nadal) -->
+                    <!-- Destacado 3 -->
                     <div class="card" onclick="location.href='.?page=deportes'">
                         <div class="card-image">
                             <img src="./img/nadal.jpg" alt="Nadal">
@@ -68,10 +69,14 @@ $articles = Article::getGeneralNews();
                             <p>El tenista español se despedirá del tenis profesional tras Roland Garros 2025...</p>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </main>
 
-<?php require_once 'C:/xampp/htdocs/El_faro/app/views/partials/footer.php'; ?>
+<?php 
+// Incluye footer común
+require_once 'C:/xampp/htdocs/El_faro/app/views/partials/footer.php'; 
+?>

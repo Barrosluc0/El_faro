@@ -11,16 +11,31 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+
+    /* Transición para animar cambio de tema */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ===== HEADER ===== */
+/* ===== MODO OSCURO (DARK MODE) ===== */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* ==================== HEADER: LOGO + BOTÓN MODO NOCTURNO ==================== */
 .header-logo {
-    /* Alinea logo e información horizontalmente */
+    /* Alinea logo a la izquierda y botón Modo Noche a la derecha */
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
     background-color: #fff;
     border-bottom: 1px solid #e1e1e1;
+}
+
+.header-logo .logo-container {
+    display: flex;
+    align-items: center;
 }
 
 .header-logo img {
@@ -52,7 +67,58 @@ body {
     margin-top: -8px;
 }
 
-/* ===== BARRA DE AVISOS ===== */
+/* Estilos del botón Modo Noche en el header (redondo) */
+#dark-mode-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 0; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2a3f54;
+    border: none;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#dark-mode-toggle .icon {
+    font-size: 1.2rem;
+}
+
+#dark-mode-toggle:hover {
+    background-color: #1f2a3a !important;
+}
+
+/* ==================== HEADER EN MODO OSCURO ==================== */
+body.dark-mode .header-logo {
+    background-color: #1f1f1f;
+    border-bottom: 1px solid #333 !important;
+}
+
+body.dark-mode .header-logo img {
+    
+    filter: brightness(0.9);
+}
+
+body.dark-mode .header-title span:first-child {
+    color: #e0e0e0;
+}
+
+body.dark-mode .header-title span:last-child {
+    color: #8ab4f8;
+}
+
+/* Botón modo noche en modo oscuro */
+body.dark-mode #dark-mode-toggle {
+    background-color: #444;
+}
+
+body.dark-mode #dark-mode-toggle:hover {
+    background-color: #666 !important;
+}
+
+/* ==================== BARRA DE AVISOS ==================== */
 .notification-bar {
     /* Barra de alerta destacada */
     background-color: #ff3860;
@@ -61,26 +127,92 @@ body {
     border-bottom: 3px solid #d1001f;
 }
 
-/* ===== NAVBAR ===== */
+body.dark-mode .notification-bar {
+    background-color: #ba1b1b;
+    color: #fff;
+    border-bottom: 3px solid #8a0000;
+}
+
+/* ==================== NAVBAR ==================== */
 .navbar {
-    /* Barra de navegación fija con sombra */
+    /* Barra de navegación */
     background-color: #2a3f54 !important;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     padding: 0.5rem 1.5rem;
 }
 
+/* Para escritorio: ajustar separaciones entre ítems */
 .navbar-menu {
-    /* Contenedor de los ítems del menú */
     display: flex;
+    justify-content: space-between;
     width: 100%;
 }
 
-/* -- ESTILOS PARA MENÚ HAMBURGUESA EN PANTALLAS PEQUEÑAS -- */
+/* Ítems del menú: padding y margen para separación */
+.navbar-item {
+    color: white !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;   
+    margin: 0 0.25rem;     
+}
+
+.navbar-item:hover {
+    font-weight: bold;
+    background-color: #3a4f64 !important;
+    color: white !important;
+    text-decoration: none;
+}
+
+/* Ícono hamburguesa */
+.navbar-burger {
+    color: white !important;
+    height: 3.25rem;
+    width: 3.25rem;
+    margin-left: auto;
+}
+
+.navbar-burger span {
+    /* Líneas blancas */
+    background-color: white !important;
+}
+
+#contador-articulos {
+    color: white;
+    margin-left: 10px;
+    font-size: 0.9rem;
+}
+
+/* ==================== NAVBAR EN MODO OSCURO ==================== */
+body.dark-mode .navbar {
+    background-color: #1a1a1a !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .navbar-menu {
+    background-color: #1a1a1a !important;
+}
+
+body.dark-mode .navbar-item,
+body.dark-mode .navbar-burger {
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .navbar-item:hover {
+    background-color: #333 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .navbar-burger span {
+    background-color: #e0e0e0 !important;
+}
+
+/* ==================== MENÚ HAMBURGUESA EN MÓVIL ==================== */
 @media (max-width: 768px) {
     .navbar-menu {
-        /* Convierte menú horizontal a vertical con animación circular */
+        /* Menú transformable para móvil */
         position: fixed !important;
-        top: 70px !important;
+        top: 70px !important; 
         left: 0 !important;
         width: 100% !important;
         background-color: #2a3f54 !important;
@@ -92,15 +224,14 @@ body {
         padding: 2rem 0 !important;
     }
 
-    .navbar-menu.active {
-        /* Expande el menú con animación */
+    /* El selector correcto para menú abierto es `.navbar-menu.is-active` */
+    .navbar-menu.is-active {
         clip-path: circle(1000px at 90% -10%);
         background-color: #2a3f54 !important;
         color: white !important;
     }
 
     .navbar-menu .navbar-item {
-        /* Ítems del menú en móvil */
         color: white !important;
         padding: 0.75rem 1.5rem !important;
         text-align: center !important;
@@ -110,7 +241,6 @@ body {
     }
 
     .navbar-menu .navbar-item:hover {
-        /* Efecto al pasar el mouse */
         background-color: #3a4f64 !important;
         color: white !important;
         font-weight: bold !important;
@@ -118,54 +248,8 @@ body {
     }
 }
 
-/* Navbar en pantallas grandes */
-.navbar-start {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.navbar-end {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    margin-left: auto;
-}
-
-.navbar-item {
-    /* Estilo base de los ítems */
-    color: white !important;
-    text-decoration: underline;
-    transition: all 0.3s ease;
-    padding: 0.5rem 0;
-}
-
-.navbar-item:hover {
-    font-weight: bold;
-    text-decoration: none;
-    background-color: #3a4f64 !important;
-}
-
-.navbar-burger {
-    /* Ícono de menú en móvil */
-    color: white !important;
-    height: 3.25rem;
-    width: 3.25rem;
-    margin-left: auto;
-}
-
-#contador-articulos {
-    /* Indicador de artículos visibles */
-    color: white;
-    margin-left: 10px;
-    font-size: 0.9rem;
-}
-
-/* ===== FECHA Y HORA ===== */
+/* ==================== FECHA Y HORA ==================== */
 .date-time-bar {
-    /* Barra que muestra fecha y hora */
     background-color: #2a3f54;
     color: white;
     padding: 0.5rem 1.5rem;
@@ -173,22 +257,25 @@ body {
     font-size: 0.9rem;
 }
 
-/* ===== CONTENIDO PRINCIPAL ===== */
+body.dark-mode .date-time-bar {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+/* ==================== CONTENIDO PRINCIPAL ==================== */
 .main-content {
-    /* Área principal de contenido */
     flex: 1;
     padding: 2rem 1.5rem;
 }
 
 .container {
-    /* Contenedor centrado */
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
 
+/* ==================== GRILLA DE ARTÍCULOS ==================== */
 .article-grid {
-    /* Grid de tarjetas (artículos) responsivo */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 1.5rem;
@@ -197,8 +284,8 @@ body {
     width: 100%;
 }
 
+/* ==================== TARJETA INDIVIDUAL (ARTICLE) ==================== */
 .card.article {
-    /* Tarjeta individual */
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -206,16 +293,36 @@ body {
     text-align: left;
     cursor: pointer;
     width: 100%;
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
 }
 
+/* Al pasar el cursor: fondo negro, texto blanco y efecto neón con box-shadow */
+/* En modo claro (día), el verde es un poco más oscuro para que se vea mejor sobre fondo blanco */
 .card.article:hover {
-    /* Hover en tarjeta: se oscurece */
     background-color: #000 !important;
     transform: translateY(-5px);
+    box-shadow:
+        0 0 8px rgb(236, 65, 185),
+        0 0 16px rgb(216, 54, 203),
+        0 0 24px rgb(172, 39, 150);
 }
 
-.card.article:hover * {
-    color: white !important;
+/* Texto por defecto dentro de la tarjeta */
+.card.article .card-content h2,
+.card.article .card-content h4,
+.card.article .card-content p {
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+/* Sobre hover: texto blanco */
+.card.article:hover .card-content h2,
+.card.article:hover .card-content h4,
+.card.article:hover .card-content p {
+    color: #fff !important;
 }
 
 /* Imágenes dentro de la tarjeta */
@@ -231,9 +338,31 @@ body {
     object-fit: cover;
 }
 
-/* ===== ARTÍCULOS RECIENTES ===== */
+/* ==================== AJUSTES PARA MODO OSCURO EN TARJETAS ==================== */
+body.dark-mode .card.article {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+/* En modo oscuro (noche), el verde se suaviza para no verse tan intenso sobre el fondo oscuro */
+body.dark-mode .card.article:hover {
+    background-color: #000 !important;
+    transform: translateY(-5px);
+    box-shadow:
+        0 0 6px rgba(39, 180, 63, 0.904),
+        0 0 12px rgba(57, 200, 81, 0.623),
+        0 0 18px rgb(26, 122, 42);
+}
+
+body.dark-mode .card.article .card-content h2,
+body.dark-mode .card.article .card-content h4,
+body.dark-mode .card.article .card-content p {
+    color: #e0e0e0;
+}
+
+/* ==================== ARTÍCULOS RECIENTES (DESTACADOS) ==================== */
 .destacados .card {
-    /* Tarjetas destacadas con efecto hover */
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -244,9 +373,18 @@ body {
     background-color: #f8f9fa !important;
 }
 
-/* ===== FOOTER ===== */
+body.dark-mode .destacados .card {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+}
+
+body.dark-mode .destacados .card:hover {
+    background-color: #2a2a2a !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* ==================== FOOTER ==================== */
 .footer {
-    /* Pie de página */
     background-color: #2a3f54;
     color: white;
     padding: 2rem 1.5rem;
@@ -263,18 +401,134 @@ body {
     text-decoration: none;
 }
 
-/* ===== FORMULARIO ===== */
-#form-agregar {
-    /* Estilo general para formulario de agregar */
-    max-width: 800px;
-    margin: 1rem auto;
-    width: 90%;
+body.dark-mode .footer {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
 }
 
-/* ===== MODAL ===== */
+body.dark-mode .footer a {
+    color: #8ab4f8 !important;
+}
+
+/* ==================== FORMULARIOS (Contacto, Nueva Noticia, Registro, Login) ==================== */
+/* Caja general */
+.box {
+    background-color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .box {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+/* Contenedores de formulario genéricos (Bulma usa `.section` y `.container`) */
+.section,
+.container-form,
+.container {
+    background-color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .section,
+body.dark-mode .container-form,
+body.dark-mode .container {
+    background-color: #1e1e1e !important;
+    color: #e0e0e0;
+}
+
+/* Campos de texto (input, textarea, select) en modo normal */
+.input,
+.textarea,
+select,
+input,
+textarea {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #dbdbdb;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Campos de texto en modo oscuro: forzamos !important para sobreescribir cualquier fondo blanco */
+body.dark-mode .input,
+body.dark-mode .textarea,
+body.dark-mode select,
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="number"],
+body.dark-mode textarea {
+    background-color: #2a2a2a !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #555 !important;
+}
+
+/* Placeholder en modo oscuro */
+body.dark-mode .input::placeholder,
+body.dark-mode .textarea::placeholder {
+    color: #aaa;
+}
+
+/* Etiquetas y texto dentro de formularios */
+.field label,
+.field p,
+.field .help {
+    color: #333;
+}
+
+body.dark-mode .field label,
+body.dark-mode .field p,
+body.dark-mode .field .help {
+    color: #e0e0e0;
+}
+
+/* Botones en formularios */
+.button {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .button.is-primary {
+    background-color: #3273dc;
+    color: white !important;
+}
+
+body.dark-mode .button.is-primary:hover {
+    background-color: #276cda;
+}
+
+/* ==================== CONTACTO, REGISTRO e INICIAR SESIÓN ==================== */
+/* Asegurar que cualquier texto general (títulos, párrafos, enlaces) cambie en modo oscuro */
+a {
+    color: #3273dc;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+body.dark-mode a {
+    color: #8ab4f8 !important;
+    text-decoration: underline;
+}
+
+/* Títulos y párrafos generales */
+h1, h2, h3, h4, h5, h6, p, label, span {
+    transition: color 0.3s ease;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode span {
+    color: #e0e0e0;
+}
+
+/* ==================== MODAL (NOTICIAS COMPLETAS) ==================== */
 .modal {
-    /* Fondo oscurecido del modal */
-    display: none;
+    /* Fondo oscurecido del modal y centrado */
     position: fixed;
     top: 0;
     left: 0;
@@ -282,17 +536,37 @@ body {
     height: 100%;
     background-color: rgba(0,0,0,0.7);
     z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
-    /* Caja blanca dentro del modal */
+    /* Caja dentro del modal */
     background-color: white;
-    margin: 5% auto;
     padding: 2rem;
-    width: 80%;
-    max-width: 800px;
     border-radius: 8px;
     position: relative;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .modal-content {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+.modal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* clic para cerrar, fondo transparente para no tapar contenido */
+    background-color: transparent;
 }
 
 .modal-image {
@@ -310,20 +584,21 @@ body {
     right: 1rem;
     font-size: 1.5rem;
     cursor: pointer;
+    background: transparent;
+    border: none;
+    color: #333;
+    transition: color 0.3s ease;
 }
 
-/* ===== BOTONES ===== */
-.button.is-primary {
-    background-color: #3273dc;
-    color: white !important;
-    font-weight: bold;
+body.dark-mode .close-modal {
+    color: #e0e0e0;
 }
 
-.button.is-primary:hover {
-    background-color: #276cda;
+.close-modal:hover {
+    color: #aa0000;
 }
 
-/* ===== RESPONSIVO ===== */
+/* ==================== RESPONSIVO ==================== */
 @media (max-width: 768px) {
     .article-grid {
         grid-template-columns: 1fr;
@@ -352,9 +627,14 @@ body {
         padding-top: 0.5rem;
         width: 100%;
     }
+
+    /* En móviles, ajustar el botón modo noche un poco más pequeño */
+    #dark-mode-toggle {
+        width: 35px;
+        height: 35px;
+    }
 }
 
-/* Ajustes para pantallas más pequeñas aún */
 @media (max-width: 480px) {
     .header-logo img {
         width: 50px;
@@ -374,8 +654,3 @@ body {
         padding: 1rem;
     }
 }
-
-
-
-
-

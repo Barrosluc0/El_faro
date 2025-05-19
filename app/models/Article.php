@@ -2,10 +2,9 @@
 require_once __DIR__ . '/../config/database.php';
 
 class Article {
-    // ===== MÉTODOS ORIGINALES (que ya funcionaban) =====
-    
     /**
-     * Obtiene noticias generales (Método original preservado)
+     * Obtiene las 3 últimas noticias generales (Nacional, Ciencia, Espectáculos).
+     * @return array Arreglo de noticias
      */
     public static function getGeneralNews() {
         $sql = "
@@ -18,17 +17,17 @@ class Article {
                 c.nombre AS category
             FROM articulos a
             JOIN categorias c ON a.categoria_id = c.id
-            WHERE a.categoria_id IN (1, 2, 3)  -- Nacional, Ciencia, Espectáculos
+            WHERE a.categoria_id IN (1, 2, 3)
             ORDER BY a.fecha_creacion DESC
             LIMIT 3
         ";
-        
         $stmt = Database::executeQuery($sql);
         return $stmt->fetchAll();
     }
 
     /**
-     * Obtiene noticias deportivas (Método original preservado)
+     * Obtiene noticias deportivas (Fútbol, Tenis, Fútbol Femenino).
+     * @return array Arreglo de noticias
      */
     public static function getSportsNews() {
         $sql = "
@@ -41,16 +40,16 @@ class Article {
                 c.nombre AS category
             FROM articulos a
             JOIN categorias c ON a.categoria_id = c.id
-            WHERE a.categoria_id IN (4, 5, 6)  -- Fútbol, Tenis, Fútbol Femenino
+            WHERE a.categoria_id IN (4, 5, 6)
             ORDER BY a.fecha_creacion DESC
         ";
-        
         $stmt = Database::executeQuery($sql);
         return $stmt->fetchAll();
     }
 
     /**
-     * Obtiene noticias de negocios (Método original preservado)
+     * Obtiene noticias de negocios (Mercados, Comercio, Minería).
+     * @return array Arreglo de noticias
      */
     public static function getBusinessNews() {
         $sql = "
@@ -63,34 +62,39 @@ class Article {
                 c.nombre AS category
             FROM articulos a
             JOIN categorias c ON a.categoria_id = c.id
-            WHERE a.categoria_id IN (7, 8, 9)  -- Mercados, Comercio, Minería
+            WHERE a.categoria_id IN (7, 8, 9)
             ORDER BY a.fecha_creacion DESC
         ";
-        
         $stmt = Database::executeQuery($sql);
         return $stmt->fetchAll();
     }
 
-    // ===== MEJORAS ADICIONALES (Nuevos métodos) =====
-    
     /**
-     * Versión con parámetros bindeados (Nueva opción)
+     * Obtiene noticias de negocios usando parámetros vinculados (más seguro).
+     * @return array Arreglo de noticias
      */
     public static function getBusinessNewsSecure() {
         $sql = "
             SELECT 
                 a.id,
                 a.titulo AS title,
-                [...]
+                a.contenido AS content,
+                a.resumen AS excerpt,
+                a.imagen AS image,
+                c.nombre AS category
+            FROM articulos a
+            JOIN categorias c ON a.categoria_id = c.id
             WHERE a.categoria_id IN (?, ?, ?)
+            ORDER BY a.fecha_creacion DESC
         ";
-        
+        // Vincula las categorías 7, 8 y 9
         $stmt = Database::executeQuery($sql, [7, 8, 9]);
         return $stmt->fetchAll();
     }
 
     /**
-     * Versión con procedimiento almacenado (Nueva opción)
+     * Obtiene noticias de negocios mediante un procedimiento almacenado.
+     * @return array Arreglo de noticias
      */
     public static function getBusinessNewsSP() {
         $stmt = Database::executeQuery("CALL sp_get_business_news()");

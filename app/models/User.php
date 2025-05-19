@@ -2,36 +2,38 @@
 require_once __DIR__ . '/../config/database.php';
 
 /**
- * Clase User - Maneja autenticación y operaciones de usuarios
+ * Clase User - Contiene métodos para autenticación y gestión de usuarios.
  */
 class User {
     /**
-     * Autentica un usuario
-     * @param string $email Correo electrónico
-     * @param string $password Contraseña
-     * @return array|false Datos del usuario o false si falla
+     * Autentica a un usuario comparando contraseña con hash guardado.
+     * @param string $email    Correo electrónico
+     * @param string $password Contraseña en texto plano
+     * @return array|false     Datos del usuario o false si no coincide
      */
     public static function authenticate($email, $password) {
         try {
+            // Llamar al procedimiento que devuelve datos del usuario por email
             $stmt = Database::executeQuery(
                 "CALL sp_authenticate_user(?)",
                 [$email]
             );
             $user = $stmt->fetch();
-            
-            return ($user && password_verify($password, $user['contrasena'])) 
-                ? $user 
+
+            // Verificar que exista el usuario y que la contraseña concuerde
+            return ($user && password_verify($password, $user['contrasena']))
+                ? $user
                 : false;
         } catch (Exception $e) {
-            error_log("Error en autenticación: ".$e->getMessage());
+            error_log("Error en autenticación: " . $e->getMessage());
             return false;
         }
     }
 
     /**
-     * Verifica si un usuario es administrador
+     * Verifica si el usuario con el correo indicado es administrador.
      * @param string $email Correo electrónico
-     * @return bool
+     * @return bool         Verdadero si es admin, falso en otro caso
      */
     public static function isAdmin($email) {
         try {
@@ -42,22 +44,22 @@ class User {
             $result = $stmt->fetch();
             return !empty($result) && $result['es_admin'] == 1;
         } catch (Exception $e) {
-            error_log("Error verificando admin: ".$e->getMessage());
+            error_log("Error verificando admin: " . $e->getMessage());
             return false;
         }
     }
 
     /**
-     * Registra un nuevo usuario
-     * @param string $name Nombre completo
-     * @param string $email Correo electrónico
-     * @param string $password Contraseña sin hash
-     * @return bool Resultado de la operación
+     * Registra un nuevo usuario con nombre, correo y contraseña hasheada.
+     * @param string $name     Nombre completo
+     * @param string $email    Correo electrónico
+     * @param string $password Contraseña ya hasheada
+     * @return bool            Verdadero si se insertó correctamente
      */
     public static function register($name, $email, $password) {
         try {
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            
+            // Llamar al procedimiento para insertar usuario
             return Database::executeQuery(
                 "CALL sp_register_user(?, ?, ?)",
                 [
@@ -67,15 +69,15 @@ class User {
                 ]
             )->rowCount() > 0;
         } catch (Exception $e) {
-            error_log("Error en registro: ".$e->getMessage());
+            error_log("Error en registro: " . $e->getMessage());
             return false;
         }
     }
 
     /**
-     * Busca un usuario por email
+     * Busca un usuario por su correo electrónico.
      * @param string $email Correo electrónico
-     * @return array|false Datos del usuario o false si no existe
+     * @return array|false  Datos del usuario o false si no existe
      */
     public static function find($email) {
         try {
@@ -85,8 +87,9 @@ class User {
             );
             return $stmt->fetch();
         } catch (Exception $e) {
-            error_log("Error buscando usuario: ".$e->getMessage());
+            error_log("Error buscando usuario: " . $e->getMessage());
             return false;
         }
     }
 }
+
