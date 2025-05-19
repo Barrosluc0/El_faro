@@ -1,10 +1,13 @@
 /* ===== ESTILOS GENERALES ===== */
 body {
+    /* Fuente base, fondo claro y color de texto */
     font-family: 'Roboto', sans-serif;
     background-color: #f5f5f5;
     color: #333;
     margin: 0;
     padding: 0;
+
+    /* Hace que el body use todo el alto disponible */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -12,6 +15,7 @@ body {
 
 /* ===== HEADER ===== */
 .header-logo {
+    /* Alinea logo e información horizontalmente */
     display: flex;
     align-items: center;
     padding: 1rem 1.5rem;
@@ -20,24 +24,28 @@ body {
 }
 
 .header-logo img {
+    /* Tamaño del logo */
     width: 70px;
     height: 70px;
     margin-right: 15px;
 }
 
 .header-title {
+    /* Alinea el título en columna */
     display: flex;
     flex-direction: column;
     line-height: 1;
 }
 
 .header-title span:first-child {
+    /* Subtítulo */
     font-size: 1.8rem;
     font-weight: 700;
     color: #333;
 }
 
 .header-title span:last-child {
+    /* Título principal */
     font-size: 2.5rem;
     font-weight: 900;
     color: #3273dc;
@@ -46,6 +54,7 @@ body {
 
 /* ===== BARRA DE AVISOS ===== */
 .notification-bar {
+    /* Barra de alerta destacada */
     background-color: #ff3860;
     color: white;
     padding: 0.75rem 1.5rem;
@@ -54,15 +63,83 @@ body {
 
 /* ===== NAVBAR ===== */
 .navbar {
+    /* Barra de navegación fija con sombra */
     background-color: #2a3f54 !important;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     padding: 0.5rem 1.5rem;
 }
 
+.navbar-menu {
+    /* Contenedor de los ítems del menú */
+    display: flex;
+    width: 100%;
+}
+
+/* -- ESTILOS PARA MENÚ HAMBURGUESA EN PANTALLAS PEQUEÑAS -- */
+@media (max-width: 768px) {
+    .navbar-menu {
+        /* Convierte menú horizontal a vertical con animación circular */
+        position: fixed !important;
+        top: 70px !important;
+        left: 0 !important;
+        width: 100% !important;
+        background-color: #2a3f54 !important;
+        color: white !important;
+        clip-path: circle(0px at 90% -10%);
+        transition: clip-path 0.5s ease-in-out;
+        z-index: 1000 !important;
+        flex-direction: column !important;
+        padding: 2rem 0 !important;
+    }
+
+    .navbar-menu.active {
+        /* Expande el menú con animación */
+        clip-path: circle(1000px at 90% -10%);
+        background-color: #2a3f54 !important;
+        color: white !important;
+    }
+
+    .navbar-menu .navbar-item {
+        /* Ítems del menú en móvil */
+        color: white !important;
+        padding: 0.75rem 1.5rem !important;
+        text-align: center !important;
+        width: 100% !important;
+        background-color: #2a3f54 !important;
+        border-bottom: 1px solid #3a4f64 !important;
+    }
+
+    .navbar-menu .navbar-item:hover {
+        /* Efecto al pasar el mouse */
+        background-color: #3a4f64 !important;
+        color: white !important;
+        font-weight: bold !important;
+        text-decoration: none !important;
+    }
+}
+
+/* Navbar en pantallas grandes */
+.navbar-start {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navbar-end {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+}
+
 .navbar-item {
+    /* Estilo base de los ítems */
     color: white !important;
     text-decoration: underline;
     transition: all 0.3s ease;
+    padding: 0.5rem 0;
 }
 
 .navbar-item:hover {
@@ -71,7 +148,16 @@ body {
     background-color: #3a4f64 !important;
 }
 
+.navbar-burger {
+    /* Ícono de menú en móvil */
+    color: white !important;
+    height: 3.25rem;
+    width: 3.25rem;
+    margin-left: auto;
+}
+
 #contador-articulos {
+    /* Indicador de artículos visibles */
     color: white;
     margin-left: 10px;
     font-size: 0.9rem;
@@ -79,6 +165,7 @@ body {
 
 /* ===== FECHA Y HORA ===== */
 .date-time-bar {
+    /* Barra que muestra fecha y hora */
     background-color: #2a3f54;
     color: white;
     padding: 0.5rem 1.5rem;
@@ -86,23 +173,22 @@ body {
     font-size: 0.9rem;
 }
 
-#fecha-hora {
-    font-family: 'Courier New', monospace;
-}
-
 /* ===== CONTENIDO PRINCIPAL ===== */
 .main-content {
+    /* Área principal de contenido */
     flex: 1;
     padding: 2rem 1.5rem;
 }
 
 .container {
+    /* Contenedor centrado */
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
 
 .article-grid {
+    /* Grid de tarjetas (artículos) responsivo */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 1.5rem;
@@ -112,6 +198,7 @@ body {
 }
 
 .card.article {
+    /* Tarjeta individual */
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -122,6 +209,7 @@ body {
 }
 
 .card.article:hover {
+    /* Hover en tarjeta: se oscurece */
     background-color: #000 !important;
     transform: translateY(-5px);
 }
@@ -130,7 +218,7 @@ body {
     color: white !important;
 }
 
-/* Imágenes de noticias */
+/* Imágenes dentro de la tarjeta */
 .card-image {
     height: 200px;
     overflow: hidden;
@@ -145,6 +233,7 @@ body {
 
 /* ===== ARTÍCULOS RECIENTES ===== */
 .destacados .card {
+    /* Tarjetas destacadas con efecto hover */
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -157,6 +246,7 @@ body {
 
 /* ===== FOOTER ===== */
 .footer {
+    /* Pie de página */
     background-color: #2a3f54;
     color: white;
     padding: 2rem 1.5rem;
@@ -175,6 +265,7 @@ body {
 
 /* ===== FORMULARIO ===== */
 #form-agregar {
+    /* Estilo general para formulario de agregar */
     max-width: 800px;
     margin: 1rem auto;
     width: 90%;
@@ -182,6 +273,7 @@ body {
 
 /* ===== MODAL ===== */
 .modal {
+    /* Fondo oscurecido del modal */
     display: none;
     position: fixed;
     top: 0;
@@ -193,6 +285,7 @@ body {
 }
 
 .modal-content {
+    /* Caja blanca dentro del modal */
     background-color: white;
     margin: 5% auto;
     padding: 2rem;
@@ -211,6 +304,7 @@ body {
 }
 
 .close-modal {
+    /* Botón de cerrar modal */
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -234,22 +328,54 @@ body {
     .article-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .columns {
         flex-direction: column;
     }
-    
+
     .column.is-8, .column.is-4 {
         width: 100%;
     }
-    
-    /* ===== CONTADOR DE ARTÍCULOS ===== */
+
+    /* Navbar en móviles */
+    .navbar-start,
+    .navbar-end {
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 0;
+        gap: 2rem;
+    }
+
     #contador-articulos {
-        color: white;
-        font-size: 0.9rem;
-        margin-left: 10px;
-        padding: 0.5rem 0;
-        display: inline-block;
-        vertical-align: middle;
+        display: block;
+        text-align: center;
+        padding-top: 0.5rem;
+        width: 100%;
     }
 }
+
+/* Ajustes para pantallas más pequeñas aún */
+@media (max-width: 480px) {
+    .header-logo img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .header-title span:first-child {
+        font-size: 1.4rem;
+    }
+
+    .header-title span:last-child {
+        font-size: 1.8rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1rem;
+    }
+}
+
+
+
+
+

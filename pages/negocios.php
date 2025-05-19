@@ -31,7 +31,12 @@ try {
                                 loading="lazy"
                             >
                         </div>
-                        <div class="card-content">
+                        <div class="card-content" onclick="mostrarNoticiaCompleta(
+                            '<?= addslashes($article['title']) ?>', 
+                            '<?= addslashes($article['category']) ?>', 
+                            '<?= addslashes($article['content']) ?>', 
+                            '<?= addslashes($article['image']) ?>'
+                        )">
                             <h2 class="title is-4"><?= htmlspecialchars($article['title']) ?></h2>
                             <h4 class="subtitle is-6"><?= htmlspecialchars($article['category']) ?></h4>
                             <p><?= htmlspecialchars($article['excerpt']) ?></p>

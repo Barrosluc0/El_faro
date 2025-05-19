@@ -13,6 +13,30 @@ require_once __DIR__ . '/../../models/User.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./styles.css">
+        <style>
+        /* Fondo azul uniforme para navbar y menú desplegable */
+        nav.navbar.is-primary,
+        .navbar-menu {
+            background-color:#2a3f54 !important; /* azul intenso */
+        }
+
+        /* Color blanco para todos los links y textos dentro del navbar */
+        .navbar-item,
+        .navbar-burger {
+            color: white !important;
+        }
+
+        /* Para que el ícono hamburguesa tenga líneas blancas */
+        .navbar-burger span {
+            background-color: white !important;
+        }
+
+        /* Hover de los links con fondo más oscuro */
+        .navbar-item:hover {
+            background-color:#2a3f54 !important;
+            color: white !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Barra de avisos -->
@@ -29,21 +53,30 @@ require_once __DIR__ . '/../../models/User.php';
         </div>
     </div>
 
-    <nav class="navbar">
-        <div class="navbar-menu">
+    <!-- Navbar Responsive -->
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a role="button" class="navbar-burger has-text-white" aria-label="menu" aria-expanded="false" data-target="navbar-menu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbar-menu" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item" href=".?page=home">Inicio</a>
-                <a class="navbar-item" href=".?page=deportes">Deportes</a>
-                <a class="navbar-item" href=".?page=negocios">Negocios</a>
-                <a class="navbar-item" href=".?page=contacto">Contacto</a>
+                <a class="navbar-item has-text-white" href=".?page=home">Inicio</a>
+                <a class="navbar-item has-text-white" href=".?page=deportes">Deportes</a>
+                <a class="navbar-item has-text-white" href=".?page=negocios">Negocios</a>
+                <a class="navbar-item has-text-white" href=".?page=contacto">Contacto</a>
             </div>
+
             <div class="navbar-end">
                 <?php if (isset($_SESSION['user'])): ?>
-                    <span class="navbar-item"><?= htmlspecialchars($_SESSION['user']['nombre']) ?></span>
+                    <span class="navbar-item has-text-white"><?= htmlspecialchars($_SESSION['user']['nombre']) ?></span>
                     
-                    <!-- Enlace para administradores -->
                     <?php if (User::isAdmin($_SESSION['user']['correo'])): ?>
-                        <a class="navbar-item" href="./?page=admin/contactos">
+                        <a class="navbar-item has-text-white" href="./?page=admin/contactos">
                             <span class="icon">
                                 <i class="fas fa-envelope"></i>
                             </span>
@@ -51,18 +84,14 @@ require_once __DIR__ . '/../../models/User.php';
                         </a>
                     <?php endif; ?>
 
-                    <a class="navbar-item" href="./?page=logout">Cerrar sesión</a>
-                    
-                    <button id="toggle-form" class="button is-primary is-small mr-3">
-                        Nueva Noticia
-                    </button>
-                    
+                    <a class="navbar-item has-text-white" href="./?page=logout">Cerrar sesión</a>
+                    <button id="toggle-form" class="button is-primary is-small mr-3 navbar-item">Nueva Noticia</button>
                 <?php else: ?>
-                    <a class="navbar-item" href=".?page=registro">Registrarse</a>
-                    <a class="navbar-item" href=".?page=login">Iniciar sesión</a>
+                    <a class="navbar-item has-text-white" href=".?page=registro">Registrarse</a>
+                    <a class="navbar-item has-text-white" href=".?page=login">Iniciar sesión</a>
                 <?php endif; ?>
-                
-                <span id="contador-articulos" class="contador-texto">Contador de artículos: 9</span>
+
+                <span id="contador-articulos" class="navbar-item has-text-white">Contador de artículos: 9</span>
             </div>
         </div>
     </nav>
@@ -91,3 +120,17 @@ require_once __DIR__ . '/../../models/User.php';
         <button class="button is-primary" onclick="agregarArticulo()">Publicar</button>
     </div>
     <?php endif; ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const burger = document.querySelector('.navbar-burger');
+            const menu = document.querySelector('#navbar-menu');
+
+            burger.addEventListener('click', () => {
+                burger.classList.toggle('is-active');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+</body>
+</html>
